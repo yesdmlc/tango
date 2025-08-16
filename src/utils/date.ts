@@ -22,6 +22,13 @@ export function getRangeBounds(rangeKey: string): DateRange {
       end.setDate(start.getDate() + 6);
       break;
     }
+    case 'this_month': {
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      start.setTime(monthStart.getTime());
+      end.setTime(monthEnd.getTime());
+      break;
+    }
     default:
       throw new Error(`Unknown rangeKey: ${rangeKey}`);
   }
