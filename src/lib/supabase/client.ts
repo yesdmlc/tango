@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // Read without non-null assertions to avoid build-time throws
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -7,8 +8,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 // Use undefined on the server and localStorage in the browser
 const storage = typeof window !== 'undefined' ? window.localStorage : undefined;
 
-// Export a client only if env vars exist; otherwise export a safe proxy that errors at runtime
-export const supabase =
+export const supabase: SupabaseClient<any, any, any> =
   supabaseUrl && supabaseAnonKey
     ? createClient(supabaseUrl, supabaseAnonKey, {
         auth: {
@@ -18,7 +18,7 @@ export const supabase =
           detectSessionInUrl: true,
         },
       })
-    : (new Proxy(
+    : ((new Proxy(
         {},
         {
           get() {
@@ -27,4 +27,4 @@ export const supabase =
             );
           },
         }
-      ) as any);
+      ) as unknown) as SupabaseClient<any, any, any>);
