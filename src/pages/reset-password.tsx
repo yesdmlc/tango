@@ -5,13 +5,29 @@ import { supabase } from '@lib/supabase/client';
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const sendResetEmail = async () => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-    if (error) {
-      setMessage(`Error: ${error.message}`);
-    } else {
-      setMessage('Password reset email sent!');
+    if (!email) {
+      setMessage('Please enter your email.');
+      return;
+    }
+
+    setSubmitting(true);
+    setMessage('');
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/reset-password` : undefined,
+      });
+      if (error) {
+        setMessage(`Error: ${error.message}`);
+      } else {
+        setMessage('Password reset email sent!');
+      }
+    } catch (e: any) {
+      setMessage(`Error: ${e?.message || 'Unexpected error'}`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -25,8 +41,13 @@ export default function ResetPasswordPage() {
         onChange={(e) => setEmail(e.target.value)}
         className="border p-2 w-full mb-4"
       />
-      <button onClick={sendResetEmail} className="bg-blue-500 text-white px-4 py-2 rounded">
-        Send Reset Email
+      <button
+        type="button"
+        onClick={sendResetEmail}
+        disabled={submitting}
+        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-60"
+      >
+        {submitting ? 'Sending…' : 'Reset'}
       </button>
       {message && <p className="mt-4 text-sm text-gray-700">{message}</p>}
     </div>
