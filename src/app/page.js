@@ -55,7 +55,7 @@ export default function HomePage() {
           Why Timing Matters More Than Ever
         </h2>
         <p className="text-center mb-8 max-w-2xl mx-auto">
-          Hong Kong businesses face rising costs, shifting consumer habits, and fierce competition. Here's why real-time reporting is no longer optional.
+          Hong Kong businesses face rising costs, shifting consumer habits, and fierce competition. Here{"'"}s why real-time reporting is no longer optional.
         </p>
         <div className="space-y-8 max-w-4xl mx-auto">
           <div>
@@ -79,7 +79,7 @@ export default function HomePage() {
               🚶‍♂️ HK$55.7B in local spending is flowing into Mainland China<sup><a href="#source3" className="text-[#007BFF]">3</a></sup>.
             </p>
             <p className="mt-2">
-              We help businesses respond in real time to retain customers and adjust strategies before it’s too late.
+              We help businesses respond in real time to retain customers and adjust strategies before it{"'"}s too late.
             </p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function HomePage() {
       <section className="py-32 px-6 max-w-5xl mx-auto">
         <h2 className="text-4xl font-bold text-center text-[#E63946] mb-2">Built for Real-World Impact</h2>
         <p className="text-center mb-12">
-          Whether you're managing restaurants, retail stores, or service centers — our platform adapts to your needs.
+          Whether you{"'"}re managing restaurants, retail stores, or service centers — our platform adapts to your needs.
         </p>
         <div className="space-y-8 mb-20">
           {[
@@ -162,7 +162,7 @@ export default function HomePage() {
       {/* Call to Action */}
       <section className="bg-[#E63946] py-32 px-6 text-center text-white">
         <h2 className="text-4xl font-bold mb-4">Let’s Build Smarter, Together</h2>
-        <p className="text-lg mb-8 mb-20">We’re onboarding select partners personally. Reach out and we’ll get you set up.</p>
+        <p className="text-lg mb-8 mb-20">We{"'"}re onboarding select partners personally. Reach out and we{"'"}ll get you set up.</p>
         <Link href="/login" className="bg-white text-[#E63946] px-6 py-3 rounded hover:bg-orange-100 transition">
           Request Access
         </Link>
