@@ -26,25 +26,16 @@ export type DashboardSectionProps = {
 };
 
 export function DashboardSection({ type, accessLevel = 3, overrides }: DashboardSectionProps) {
+  // Hooks and computed values at the top
   const def = sectionConfig[type];
-  if (!def) return null;
-
-  if (accessLevel > def.accessLevel) return null;
-
   const { user, loading: authLoading } = useAuth() as { user: UserWithClientId; loading: boolean };
-  if (authLoading || !user) return null;
-
-  const { client_id } = user;
-  if (!client_id) return null;
+  const [data, setData] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const merged = {
     ...overrides,
   };
-
   const tagsString = JSON.stringify(merged.tags);
-
-  const [data, setData] = useState<any[] | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -55,7 +46,7 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
       let query = supabase
         .from('entries')
         .select('*')
-        .eq('client_id', client_id)
+        .eq('client_id', user?.client_id)
         .eq('entry_type', merged.entryType);
 
       if (merged.subType) query = query.eq('sub_type', merged.subType);
@@ -90,7 +81,12 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
     return () => {
       isMounted = false;
     };
-  }, [type, client_id, merged.entryType, merged.subType, tagsString, merged.limit, merged.dateRange]);
+  }, [type, user?.client_id, merged.entryType, merged.subType, tagsString, merged.tags, merged.limit, merged.dateRange]);
+
+  // Early returns after hooks
+  if (!def) return null;
+  if (accessLevel > def.accessLevel) return null;
+  if (authLoading || !user?.client_id) return null;
 
   const SectionComponent = def.component;
 
@@ -115,7 +111,7 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
   return (
     <div className="bg-white shadow rounded p-4 mb-6">
       <h3 className="text-base font-semibold mb-3">{merged.title}</h3>
-      <SectionComponent data={data} clientId={client_id} />
+      <SectionComponent data={data} clientId={user.client_id} />
     </div>
   );
 }

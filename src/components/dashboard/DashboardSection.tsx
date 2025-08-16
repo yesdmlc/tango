@@ -86,7 +86,7 @@ export function DashboardSection({ type, accessLevel = 3, overrides, user }: Das
     return () => {
       isMounted = false;
     };
-  }, [type, user?.client_id, merged.entryType, merged.subType, tagsString, merged.limit, merged.dateRange]);
+  }, [type, user?.client_id, merged.entryType, merged.subType, tagsString, merged.tags, merged.limit, merged.dateRange]);
 
   // Now do conditional returns
   if (!def) return null;
