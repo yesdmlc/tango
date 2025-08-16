@@ -6,7 +6,7 @@ type DashboardModule = {
 
 export async function getVisibleModules(userId: string): Promise<string[]> {
   const { data, error } = await supabase
-    .from<DashboardModule>('dashboard_modules')
+    .from<any, any>('dashboard_modules')
     .select('module_key')
     .eq('user_id', userId);
 
