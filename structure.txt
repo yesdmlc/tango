@@ -1,0 +1,78 @@
+.
+├── dashboard.js
+├── eslint.config.mjs
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── README.md
+├── scripts
+│   └── testSupabase.js
+├── src
+│   ├── app
+│   │   ├── (auth)
+│   │   │   ├── dashboard
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   └── profile
+│   │   │       └── page.tsx
+│   │   ├── details
+│   │   │   ├── items-sold
+│   │   │   │   └── page.tsx
+│   │   │   └── visitor-count
+│   │   │       └── page.tsx
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   └── page.js
+│   ├── components
+│   │   ├── dashboard
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── DashboardSection.tsx
+│   │   │   ├── sectionConfig.ts
+│   │   │   ├── sections
+│   │   │   │   ├── ClientVisits.tsx
+│   │   │   │   ├── RevenueSummary.tsx
+│   │   │   │   ├── SalesOverview.tsx
+│   │   │   │   └── TopSellingItemsSection.tsx
+│   │   │   ├── VisitorCountWidget.tsx
+│   │   │   ├── widgetRegistry.tsx
+│   │   │   └── widgets
+│   │   │       ├── FallbackWidget.tsx
+│   │   │       ├── ItemsSoldWidget.tsx
+│   │   │       ├── SalesChartWidget.tsx
+│   │   │       ├── VisitorCountWidget.tsx
+│   │   │       └── Widget.tsx
+│   │   ├── KpiCard.tsx
+│   │   ├── Navbar.tsx
+│   │   └── user_management
+│   │       ├── UserFormModal.tsx
+│   │       ├── UserListTable.tsx
+│   │       └── UserManagementPage.tsx
+│   ├── constants
+│   │   ├── accessLevels.ts
+│   │   └── roles.ts
+│   ├── hooks
+│   │   └── useAuthRedirect.ts
+│   ├── lib
+│   │   ├── auth
+│   │   │   └── loginUser.ts
+│   │   ├── supabase
+│   │   │   └── users.ts
+│   │   ├── supabaseClient.ts
+│   │   └── utils.ts
+│   └── utils
+│       └── getVisibleModules.ts
+├── structure.txt
+└── tsconfig.json
+
+23 directories, 53 files
