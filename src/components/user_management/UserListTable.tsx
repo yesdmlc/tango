@@ -3,7 +3,8 @@ import React from 'react';
 import { useAuth } from '@context/AuthContext';
 
 export const UserListTable = ({ onEdit }: { onEdit: (user: any) => void }) => {
-  const { users } = useAuth();
+  const auth = useAuth() as any;
+  const users = (auth?.users ?? []) as any[];
 
   return (
     <table>
