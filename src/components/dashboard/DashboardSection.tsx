@@ -31,20 +31,16 @@ export type DashboardSectionType =
   | 'user_management';
 
 export function DashboardSection({ type, accessLevel = 3, overrides, user }: DashboardSectionProps) {
+  // All hooks at the top
   const def = sectionConfig[type];
-  if (!def) return null;
-
-  if (accessLevel > def.accessLevel) return null;
-
-  const { client_id } = user;
-  if (!client_id) return null;
+  const [data, setData] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const merged = {
     ...overrides,
   };
 
-  const [data, setData] = useState<any[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const tagsString = JSON.stringify(merged.tags);
 
   useEffect(() => {
     let isMounted = true;
@@ -55,7 +51,7 @@ export function DashboardSection({ type, accessLevel = 3, overrides, user }: Das
       let query = supabase
         .from('entries')
         .select('*')
-        .eq('client_id', client_id)
+        .eq('client_id', user?.client_id)
         .eq('entry_type', merged.entryType);
 
       if (merged.subType) query = query.eq('sub_type', merged.subType);
@@ -90,7 +86,12 @@ export function DashboardSection({ type, accessLevel = 3, overrides, user }: Das
     return () => {
       isMounted = false;
     };
-  }, [type, client_id, merged.entryType, merged.subType, JSON.stringify(merged.tags), merged.limit, merged.dateRange]);
+  }, [type, user?.client_id, merged.entryType, merged.subType, tagsString, merged.limit, merged.dateRange]);
+
+  // Now do conditional returns
+  if (!def) return null;
+  if (accessLevel > def.accessLevel) return null;
+  if (!user?.client_id) return null;
 
   const SectionComponent = def.component;
 

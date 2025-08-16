@@ -5,6 +5,9 @@ import { supabase } from '@lib/supabase/client';
 import { sectionConfig } from '@components/dashboard/sectionConfig';
 import { DateRange, getRangeBounds } from '@utils/date';
 import { useAuth } from '@context/AuthContext';
+import type { User } from '@supabase/supabase-js';
+
+type UserWithClientId = User & { client_id: string };
 
 type SectionInstanceOverrides = {
   title?: string;
@@ -28,16 +31,17 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
 
   if (accessLevel > def.accessLevel) return null;
 
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth() as { user: UserWithClientId; loading: boolean };
   if (authLoading || !user) return null;
 
   const { client_id } = user;
   if (!client_id) return null;
 
   const merged = {
-    ...def.defaults,
     ...overrides,
   };
+
+  const tagsString = JSON.stringify(merged.tags);
 
   const [data, setData] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +61,10 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
       if (merged.subType) query = query.eq('sub_type', merged.subType);
       if (merged.tags?.length) query = query.contains('tags', merged.tags);
 
-      const { start, end } = getRangeBounds(merged.dateRange);
+      const { start, end } =
+        typeof merged.dateRange === 'string'
+          ? getRangeBounds(merged.dateRange)
+          : merged.dateRange || getRangeBounds('this_week');
       query = query
         .gte('created_at', start.toISOString())
         .lte('created_at', end.toISOString())
@@ -83,7 +90,7 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
     return () => {
       isMounted = false;
     };
-  }, [type, client_id, merged.entryType, merged.subType, JSON.stringify(merged.tags), merged.limit, merged.dateRange]);
+  }, [type, client_id, merged.entryType, merged.subType, tagsString, merged.limit, merged.dateRange]);
 
   const SectionComponent = def.component;
 
@@ -108,7 +115,7 @@ export function DashboardSection({ type, accessLevel = 3, overrides }: Dashboard
   return (
     <div className="bg-white shadow rounded p-4 mb-6">
       <h3 className="text-base font-semibold mb-3">{merged.title}</h3>
-      <SectionComponent data={data} />
+      <SectionComponent data={data} clientId={client_id} />
     </div>
   );
 }
